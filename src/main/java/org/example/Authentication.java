@@ -93,10 +93,23 @@ public class Authentication {
         String usermail=result.getString("email");
        return usermail;
     }
-    public static String Login() throws IOException {
+    public static class Auth{
+        public static String userEmail ;
+        public static String getUserEmail() {
+            return userEmail;
+        }
+
+        public static void setUserEmail(String email){
+            userEmail=email;
+        }
+
+    }
+    public static void Login() throws IOException {
         BufferedReader d = new BufferedReader(new InputStreamReader(System.in));
         Scanner scanner = new Scanner(System.in);
+        Auth User= new Auth();
         boolean isAuthenticated=false;
+
         do{
             System.out.println("Choose an option:");
             System.out.println("1. Login");
@@ -114,12 +127,13 @@ public class Authentication {
                  isAuthenticated = login(email, password);
 
                 if (isAuthenticated) {
+
                     System.out.println("Login successful.");
-                     return getUserId(email);
+                     User.setUserEmail(email);
 
                 } else {
                     System.out.println("Login failed. Invalid email or password.");
-                    return null;
+
                 }
             } else if (option == 2) {
                 System.out.print("Enter your name: ");
@@ -128,18 +142,17 @@ public class Authentication {
                 String email = d.readLine();
                 System.out.print("Enter your password: ");
                 String password = d.readLine();
-
                 signup(name, email, password);
-                return null;
+
             }
             else if(option==3)
             {
                 System.exit(0);
-                return null;
+
             }
             else {
                 System.out.println("Invalid option.");
-                return null;
+
             }
         }while(!isAuthenticated);
 

@@ -100,7 +100,6 @@ public class MongoDBConnection {
             // Delete the matching document(s) from the collection
             collection.deleteMany(filter);
 
-            System.out.println("Document(s) deleted successfully.");
         } else {
             System.out.println("Failed to retrieve the collection.");
         }
@@ -112,27 +111,49 @@ public class MongoDBConnection {
             // Find all documents in the collection
             MongoCursor<Document> cursor = collection.find().iterator();
             if(tableName.equalsIgnoreCase("clothes")) {
-                System.out.println("Product Name          Product Color       Product Size     Product Prize");
+                System.out.println("---------------------------------------------------------------------------------------------------------------------");
+                System.out.println("Product Name\t\t\t\t\t\tProduct Color\t\t\tProduct Size\t\tProduct Price");
+                System.out.println("---------------------------------------------------------------------------------------------------------------------");
                 // Print each document
                 while (cursor.hasNext()) {
                     Document document = cursor.next();
-                    System.out.println(document.getString("name") + "          " + document.getString("color") + "       " + document.getString("size") + "     " + document.getDouble("price"));
+                    String name = document.getString("name");
+                    String color = document.getString("color");
+                    String size = document.getString("size");
+                    String price = String.valueOf(document.getDouble("price"));
+
+                    String formattedRow = String.format("%-40s %-20s %-20s %-10s", name, color, size, price);
+                    System.out.println(formattedRow);
                 }
             }
                 else if(tableName.equalsIgnoreCase("food")){
-                    System.out.println("Item Name               Item Prize");
-                    // Print each document
-                    while (cursor.hasNext()) {
-                        Document document = cursor.next();
-                        System.out.println(document.getString("name")+"              "+document.getDouble("price"));
-                    }
-                }
-            else if(tableName.equalsIgnoreCase("accessories")){
-                System.out.println("Product Name          Product Brand          Product Color          Product Prize");
-                // Print each document
+                System.out.println("---------------------------------------------------------------------------------------------------------------------");
+                System.out.println("Item Name\t\t\t\t\t\t\tItem Price");
+                System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+                   // Print each document
                 while (cursor.hasNext()) {
                     Document document = cursor.next();
-                    System.out.println(document.getString("name")+"          "+document.getString("brand")+"          "+document.getString("color")+"          "+document.getDouble("price"));
+                    String itemName = document.getString("name");
+                    String itemPrice = String.valueOf(document.getDouble("price"));
+
+                    String formattedRow = String.format("%-40s %-10s", itemName, itemPrice);
+                    System.out.println(formattedRow);
+                }
+                }
+            else if(tableName.equalsIgnoreCase("accessories")){
+                System.out.println("---------------------------------------------------------------------------------------------------------------------");
+                System.out.println("Product Name\t\t\t\t\t\tProduct Brand\t\t\tProduct Color\t\tProduct Price");
+                System.out.println("------------------------------------------------------------------------------------------------------------------------");
+// Print each document
+                while (cursor.hasNext()) {
+                    Document document = cursor.next();
+                    String productName = document.getString("name");
+                    String productBrand = document.getString("brand");
+                    String productColor = document.getString("color");
+                    String productPrice = String.valueOf(document.getDouble("price"));
+
+                    String formattedRow = String.format("%-40s %-20s %-20s %-10s", productName, productBrand, productColor, productPrice);
+                    System.out.println(formattedRow);
                 }
             }
 
@@ -148,7 +169,7 @@ public class MongoDBConnection {
 
         // Replace the placeholder with your MongoDB deployment's connection string
 
-        MongoCollection<Document> collection = GetCollection("Accessories");
+        MongoCollection<Document> collection = GetCollection("Clothes");
 
    //     System.out.println("Accessories collection 'accessories' created successfully.");
 
@@ -187,6 +208,21 @@ public class MongoDBConnection {
 
 //        updateDocument(tableName, field, value, updateField, updateValue);
 //        deleteDocuments(tableName, field, value);
-//        displayTable(tableName);
+//        displayTable("Clothes");
+//        displayTable("Accessories");
+//        displayTable("Food");
+        List<Document> clothesItems = new ArrayList<>();
+        clothesItems.add(new Document("name", "t-shirt").append("color", "red").append("size", "M").append("price", "19.99").append("quantity", 10));
+        clothesItems.add(new Document("name", "jeans").append("color", "blue").append("size", "30").append("price", "49.99").append("quantity", 5));
+        clothesItems.add(new Document("name", "dress").append("color", "black").append("size", "S").append("price", "39.99").append("quantity", 8));
+        clothesItems.add(new Document("name", "sweater").append("color", "gray").append("size", "L").append("price", "29.99").append("quantity", 15));
+        clothesItems.add(new Document("name", "skirt").append("color", "pink").append("size", "XS").append("price", "24.99").append("quantity", 3));
+        clothesItems.add(new Document("name", "shirt").append("color", "white").append("size", "XL").append("price", "22.99").append("quantity", 20));
+        clothesItems.add(new Document("name", "shorts").append("color", "green").append("size", "32").append("price", "17.99").append("quantity", 12));
+        clothesItems.add(new Document("name", "jacket").append("color", "brown").append("size", "M").append("price", "59.99").append("quantity", 6));
+        clothesItems.add(new Document("name", "sweatpants").append("color", "navy").append("size", "L").append("price", "34.99").append("quantity", 9));
+        clothesItems.add(new Document("name", "blouse").append("color", "yellow").append("size", "S").append("price", "27.99").append("quantity", 18));
+
+        collection.insertMany(clothesItems);
     }
 }

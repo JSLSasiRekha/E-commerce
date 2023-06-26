@@ -59,16 +59,48 @@ public class Cart {
             String TableName= document.getString("table");
             Document item1=findDocuments(TableName,filter1);
             if (item1!=null){
-                System.out.println(item1.toJson());
-                TotalPrice+=item1.getDouble("price");
+                System.out.println("---------------------------------------------------------------");
+                if(TableName.equalsIgnoreCase("Accessories"))
+                {
+                    String itemName = item1.getString("name");
+                    String itemBrand = item1.getString("brand");
+                    String itemColor = item1.getString("color");
+                    String itemPrice = item1.getString("price");
+
+                    System.out.printf("Item Name: %-20s%n", itemName);
+                    System.out.printf("Item Brand: %-20s%n", itemBrand);
+                    System.out.printf("Item Color: %-20s%n", itemColor);
+                    System.out.printf("Item Price: %-20s%n", itemPrice);
+                }
+              else if(TableName.equalsIgnoreCase("Clothes")){
+                    String itemName = item1.getString("name");
+                    String itemSize = item1.getString("size");
+                    String itemColor = item1.getString("color");
+                    String itemPrice = item1.getString("price");
+
+                    System.out.printf("Item Name: %-20s%n", itemName);
+                    System.out.printf("Item Size: %-20s%n", itemSize);
+                    System.out.printf("Item Color: %-20s%n", itemColor);
+                    System.out.printf("Item Price: %-20s%n", itemPrice);
+                }
+              else{
+                    String itemName = item1.getString("name");
+                    String itemPrice = item1.getString("price");
+
+                    System.out.printf("Item Name: %-20s%n", itemName);
+                    System.out.printf("Item Price: %-20s%n", itemPrice);
+                }
+                TotalPrice+=Double.parseDouble(item1.getString("price"));
             }
 
 
         }
+        System.out.println("-------------------------------------------------------");
         System.out.println("Total Price: "+TotalPrice);
 
     }
     public static void main (String[] args) {
         AddToCart("sasirekha@gmail.com","pasta","Food");
+        DisplayCart("sasirekha@gmail.com");
     }
 }
